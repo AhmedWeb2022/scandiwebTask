@@ -29,8 +29,8 @@
                   <h1>Product Add</h1>
                 </div>
                 <div class="button col-md-6 d-flex justify-content-end">
-                  <button class="btn btn-primary mx-2 my-2 text-uppercase" type="submit" name="save">Save</button>
-                  <button class="btn btn-danger mx-2 my-2 text-uppercase" name="cancel">Cancel</button></a>
+                  <button class="btn btn-primary mx-2 my-2 text-uppercase" type="submit" id="save" name="save">Save</button>
+                  <button class="btn btn-danger mx-2 my-2 text-uppercase" name="cancel" onclick="location.href='index.php'" id="cancel">Cancel</button></a>
                 </div>
                 <hr class="border border-2 border-dark">
               </div>
@@ -85,25 +85,10 @@
             </div>
           </div>
         </form>
+        <div class='error-message'>
+        </div>
       </div>
     </div>
-    <?php
-    if (!isset($_GET['error'])) {
-    } else {
-      $formCheck = $_GET['error'];
-      if ($formCheck == "emptyInput") {
-        echo "<div class='alert alert-danger alert-dismissible fade show col-md-4 text-center mx-auto my-4' role='alert'>" .
-          "<div> You did not fill in all fields! </div>" .
-          "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>" .
-          "</div>";
-      } else if ($formCheck == "skuTaken") {
-        echo "<div class='alert alert-danger alert-dismissible fade show col-md-4 text-center mx-auto my-4' role='alert'>" .
-          "<div> The SKU is already exist </div>" .
-          "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>" .
-          "</div>";
-      }
-    }
-    ?>
     <hr class="border border-2 border-dark">
     </div>
   </section>
@@ -118,10 +103,39 @@
   <script>
     $(document).ready(function() {
       $('#productType').on('change', function() {
-        console.log($(this).val());
         $(".input").hide();
         $("#" + $(this).val()).fadeIn(700);
       }).change();
+    });
+
+    $(document).ready(function() {
+      $('form').submit(function(event) {
+        event.preventDefault();
+        var sku = $("#sku").val();
+        var name = $('#name').val();
+        var price = $('#price').val();
+        var productType = $('#productType').val();
+        var size = $('#size').val();
+        var height = $('#height').val();
+        var width = $('#width').val();
+        var length = $('#length').val();
+        var weight = $('#weight').val();
+        var save = $('#save').val();
+        var cancel = $('#cancel').val();
+        $('.error-message').load("./includes/add_products.php", {
+          sku: sku,
+          name: name,
+          price: price,
+          productType: productType,
+          size: size,
+          height: height,
+          width: width,
+          length: length,
+          weight: weight,
+          save: save,
+          cancel: cancel,
+        });
+      });
     });
   </script>
 </body>

@@ -1,14 +1,12 @@
 <?php
 include 'GlobalProduct.php';
+include 'Dvd.php';
+include 'Book.php';
+include 'Furniture.php';
 class Product extends  Dbh
 {
 
-  protected function setProduct($sku, $name, $type, $price)
-  {
-    $stmt = "INSERT INTO product (sku,name,type,price) VALUES ('$sku','$name','$type',$price);";
-    mysqli_query($this->connect(), $stmt);
-    $stmt = null;
-  }
+  // function to delete the data from database
   public function deleteProducts($extract_id)
   {
     $stmt = "DELETE FROM product WHERE product_id IN($extract_id);";
@@ -17,31 +15,7 @@ class Product extends  Dbh
       header("location: ../index.php");
     }
   }
-
-  protected function checkProductSku($sku)
-  {
-    $stmt = "SELECT * FROM product WHERE sku = '$sku';";
-    $dbResult = mysqli_query($this->connect(), $stmt);
-    $resultCheck = mysqli_num_rows($dbResult);
-    $result = null;
-    if ($resultCheck > 0) {
-      $result = false;
-    } else {
-      $result = true;
-    }
-    return $result;
-  }
-
-  public function insert(GlobalProduct $product, $sku, $name, $type, $price, $measurement)
-  {
-    $type = $product->save($sku, $name, $type, $price, $measurement);
-    return $type;
-  }
-  public function show(GlobalProduct $product, $sku)
-  {
-    $type = $product->checkType($sku);
-    return $type;
-  }
+  // function to display the data from database
   public function showProduct()
   {
     $sql = "SELECT * FROM product;";
@@ -61,5 +35,38 @@ class Product extends  Dbh
           '</div>';
       }
     }
+  }
+  // function to check if the sku exist in database
+  protected function checkProductSku($sku)
+  {
+    $stmt = "SELECT * FROM product WHERE sku = '$sku';";
+    $dbResult = mysqli_query($this->connect(), $stmt);
+    $resultCheck = mysqli_num_rows($dbResult);
+    $result = null;
+    if ($resultCheck > 0) {
+      $result = false;
+    } else {
+      $result = true;
+    }
+    return $result;
+  }
+  // function to check which type of product that will be store
+
+  public function insert(GlobalProduct $product, $sku, $name, $type, $price, $measurement)
+  {
+    $type = $product->save($sku, $name, $type, $price, $measurement);
+    return $type;
+  }
+  // function to check which type of product that will be display
+  public function show(GlobalProduct $product, $sku)
+  {
+    $type = $product->show($sku);
+    return $type;
+  }
+  // function to check which type of product has  data 
+  public function checkSelectOptions(GlobalProduct $product, $inputs)
+  {
+    $input = $product->checkInput($inputs);
+    return $input;
   }
 }
