@@ -35,7 +35,7 @@ if (isset($_POST['save'])) {
     $product->setNum($weight);
   }
   $product->addProduct();
-  
+
   // $product->addProduct();
   header("location: ../index.php?error-none");
 }
