@@ -53,7 +53,7 @@
               <div class="col-md-12">
                 <label for="Type" class="form-label">Product Type</label>
                 <select name="productType" class="form-select" id="productType">
-                  <option selected>Choose...</option>
+                  <option disabled selected>Choose...</option>
                   <option value="Dvd">DVD</option>
                   <option value="Book">Book</option>
                   <option value="Furniture">Furniture</option>

@@ -25,14 +25,14 @@ if (isset($_POST['save'])) {
 
   $product = new ProductController($sku, $name, $price, $type);
   if (!empty($size)) {
-    $product->setNum($size);
+    $product->setMeasurement($size);
   }
   if (!empty($height) && !empty($width) && !empty($length)) {
     $dimension = $height . 'x' . $width . 'x' . $length;
-    $product->setNum($dimension);
+    $product->setMeasurement($dimension);
   }
   if (!empty($weight)) {
-    $product->setNum($weight);
+    $product->setMeasurement($weight);
   }
   $product->addProduct();
 
