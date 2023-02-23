@@ -17,14 +17,10 @@ if (isset($_POST['save'])) {
 
 
   // include the required classes
-
   include "../classes/dbh.php";
   include "../classes/product.php";
   include "../classes/productController.php";
 
-  // define a variable to handle error message
-
-  $error_message = false;
 
 
   // make instance of class and passing the input values
@@ -41,34 +37,29 @@ if (isset($_POST['save'])) {
   $product->setWeight($weight);
 
   // call the function to check if there is an empty inputs
+  $errors = $product->emptyInput();
+  // call the function to check if the sku exists
+  $skuCheck = $product->skuCheck();
 
-  if ($product->emptyInput()) {
-    echo "<div class='alert alert-danger alert-dismissible fade show col-md-4 text-center mx-auto my-4' role='alert'>" .
-      "<div>" . $product->emptyInput() . "</div>" .
-      "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>" .
-      "</div>";
-    $error_message = true;
-  }
-  // call the function to check if the sku exist in database
 
-  else if ($product->skuCheck()) {
-    echo "<div class='alert alert-danger alert-dismissible fade show col-md-4 text-center mx-auto my-4' role='alert'>" .
-      "<div>" . $product->skuCheck() . "</div>" .
-      "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>" .
-      "</div>";
-    $error_message = true;
+  // handel the validation response to send it to create-product form
+  $response = array(
+    'status' => 0,
+    'message' => []
+  );
+  $check = false;
+  if (!empty($errors)) {
+    $response['message'] = $errors;
+    $response['status'] = 0;
+  } else if ($skuCheck) {
+    $response['message'] = $skuCheck;
+    $response['status'] = 2;
   } else {
-    $error_message = false;
-    // if there is no error message cll the insert function to store data in database
     $product->addProduct();
-    // header("location: ../index.php");
+    $response['status'] = 1;
   }
-}
 
-?>
-<script>
-  var errorMessage = "<?php echo $error_message; ?>";
-  if (errorMessage == false) {
-    location.assign("http://localhost/scandiwebTask/index.php");
-  }
-</script>
+
+
+  echo json_encode($response);
+}

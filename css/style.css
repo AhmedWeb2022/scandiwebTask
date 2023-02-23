@@ -1,0 +1,22 @@
+.input {
+  display: none;
+}
+
+#input-error,
+#sku-error,
+#name-error,
+#price-error,
+#type-error,
+#size-error,
+#height-error,
+#width-error,
+#length-error,
+#weight-error,
+#sku-exist-error {
+  display: none;
+
+  width: 60%;
+  margin-bottom: -15px !important;
+  margin-top: 10px !important;
+  margin-right: 10px !important;
+}

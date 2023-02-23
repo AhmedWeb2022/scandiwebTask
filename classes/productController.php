@@ -1,8 +1,9 @@
 <?php
-
+include "validation.php";
 
 class ProductController extends Product
 {
+
   // set properties
 
   private $sku;
@@ -66,20 +67,22 @@ class ProductController extends Product
   public function emptyInput()
   {
     $result = null;
-
-    if (empty($this->sku) || empty($this->name) || empty($this->price) || empty($this->type)) {
-      $result = 'Please fill up the empty fields';
-    } else if ($this->type === 'Dvd' && empty($this->size)) {
-      $result = 'Please provide the size of the DVD';
-    } else if ($this->type === 'Book' && empty($this->weight)) {
-      $result = 'Please provide the weight of the Book';
-    } else if ($this->type === 'Furniture' && (empty($this->height) || empty($this->width) || empty($this->length))) {
-      $result = 'Please provide the dimensions of the Furniture';
-    }
-
+    $data = [
+      'SKU' => $this->sku,
+      'name' => $this->name,
+      'price' => $this->price,
+      'type' => $this->type,
+      'size' => $this->size,
+      'height' => $this->height,
+      'width' => $this->width,
+      'length' => $this->length,
+      'weight' => $this->weight,
+    ];
+    $validator = new Validation($data);
+    $result = $validator->validationForm();
     return $result;
   }
-// function to check if the sku exist in database
+  // function to check if the sku exist in database
   public function skuCheck()
   {
     $result = null;

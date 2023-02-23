@@ -22,18 +22,13 @@ class Product extends  Dbh
     $result = mysqli_query($this->connect(), $sql);
     $resultCheck = mysqli_num_rows($result);
     if ($resultCheck > 0) {
+      $cards = [];
       while ($row = mysqli_fetch_assoc($result)) {
-        echo '<div class="card " style="width: 16rem; margin-top:10px;">' .
-          '<div class="text-end">' .
-          '<input type="checkbox" style="cursor:pointer" class="delete-checkbox" name="delete_check[]" value="' . $row['product_id'] . '" id="check">' . '</div>' .
-          '<div class="card-body row justify-content-center  align-items-center">' .
-          '<p class="text-center">' . $row['sku'] . '</p>' .
-          '<p class="text-center">' . $row['name'] . '</p>' .
-          '<p class="text-center">' . $row['price'] . ' $' . '</p>' .
-          '<p class="text-center">' . $this->show(new $row['type'], $row['sku']) . '</p>' .
-          '</div>' .
-          '</div>';
+        array_push($cards, $row);
       }
+
+
+      return $cards;
     }
   }
   // function to check if the sku exist in database
